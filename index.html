@@ -50,6 +50,13 @@
         a { color: var(--text-primary); text-decoration: none; transition: color 0.3s ease; }
         a:hover { color: var(--accent); }
 
+        /* Reading Progress Bar */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; width: 0%; height: 3px;
+            background: var(--accent); z-index: 9999;
+            transition: width 0.1s ease-out; pointer-events: none;
+        }
+
         /* BULLETPROOF FADE-IN */
         .container { 
             max-width: 1100px; margin: 0 auto; padding: 0 5%; 
@@ -74,9 +81,12 @@
         .theme-btn {
             background: transparent; border: 1px solid var(--border-color); color: var(--text-primary);
             padding: 8px 20px; border-radius: 50px; cursor: pointer; font-family: var(--font-ui); font-size: 0.9rem;
-            transition: all 0.3s ease;
         }
         .theme-btn:hover { background: var(--text-primary); color: var(--bg-primary); }
+
+        /* Magnetic Elements Base */
+        .magnetic { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .magnetic:hover { transition: transform 0.05s linear; }
 
         /* Hero Section */
         .hero { padding: 200px 0 120px; min-height: 85vh; display: flex; flex-direction: column; justify-content: center; }
@@ -105,14 +115,13 @@
         .card {
             background: var(--bg-secondary); border: 1px solid var(--border-color);
             padding: 40px; border-radius: 16px; cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative; overflow: hidden;
         }
         .card::before {
             content: "Explore ↗"; position: absolute; top: 30px; right: 30px;
             font-size: 0.9rem; opacity: 0; transition: opacity 0.3s ease; color: var(--text-secondary);
         }
-        .card:hover { transform: translateY(-8px); border-color: var(--text-primary); }
+        .card:hover { border-color: var(--text-primary); }
         .card:hover::before { opacity: 1; }
         .card h3 { font-size: 1.8rem; margin-bottom: 15px; font-weight: 600; letter-spacing: -0.5px; }
         .card p { color: var(--text-secondary); font-size: 1.05rem; margin: 0; }
@@ -129,8 +138,7 @@
         .newsletter-box {
             background: var(--bg-secondary); border: 1px solid var(--border-color);
             padding: 60px 40px; border-radius: 16px; text-align: center;
-            max-width: 800px; margin: 0 auto;
-            transition: all 0.3s ease;
+            max-width: 800px; margin: 0 auto; transition: all 0.3s ease;
         }
         .newsletter-box:hover { border-color: var(--text-primary); }
         .newsletter-box h2 { font-size: 2.2rem; margin-bottom: 15px; letter-spacing: -1px; }
@@ -182,6 +190,16 @@
         .reader-mode p { font-family: var(--font-story); font-size: 1.2rem; line-height: 1.9; color: var(--text-primary); margin-bottom: 25px; }
         .reader-mode ul { margin: 0 0 25px 20px; font-family: var(--font-story); font-size: 1.2rem; line-height: 1.9; }
 
+        /* Share Section */
+        .share-section { margin-top: 60px; border-top: 1px solid var(--border-color); padding-top: 30px; text-align: center; }
+        .share-section h4 { margin-bottom: 20px; font-size: 1rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+        .share-row { display: flex; justify-content: center; gap: 15px; }
+        .share-btn { 
+            width: 50px; height: 50px; border-radius: 50%; background: var(--bg-secondary); border: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--text-primary);
+        }
+        .share-btn:hover { background: var(--text-primary); color: var(--bg-primary); border-color: var(--text-primary); }
+
         /* Footer & Socials */
         footer { padding: 80px 0 120px; border-top: 1px solid var(--border-color); margin-top: 50px; }
         .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px; }
@@ -189,9 +207,9 @@
         .social-link {
             display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 20px;
             background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);
-            transition: all 0.3s ease; text-align: center;
+            text-align: center;
         }
-        .social-link:hover { border-color: var(--text-primary); background: transparent; transform: translateY(-3px); }
+        .social-link:hover { border-color: var(--text-primary); background: transparent; }
         .social-icon { font-size: 2rem; margin-bottom: 15px; color: var(--text-primary); transition: color 0.3s ease; }
         .social-link:hover .social-icon { color: var(--accent); }
         .social-link span.label { font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
@@ -204,9 +222,7 @@
             border: 1px solid var(--border-color); border-radius: 50px;
             padding: 10px 20px; display: flex; align-items: center; gap: 15px;
             z-index: 999; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
         }
-        .music-player:hover { transform: scale(1.05); }
         .play-btn {
             background: var(--text-primary); color: var(--bg-primary); border: none;
             width: 35px; height: 35px; border-radius: 50%; display: flex;
@@ -219,10 +235,12 @@
 </head>
 <body>
 
+    <div id="progress-bar"></div>
+
     <nav>
         <div class="nav-inner">
             <div class="logo">Ephraim Teketel</div>
-            <button class="theme-btn" id="theme-toggle">Dark Mode</button>
+            <button class="theme-btn magnetic" id="theme-toggle">Dark Mode</button>
         </div>
     </nav>
 
@@ -261,16 +279,10 @@
             <div class="section-header">02. Writings & Thoughts</div>
             <div class="grid">
                 
-                <div class="card" onclick="openDrawer('drawer-blog-2')">
+                <div class="card magnetic" onclick="openDrawer('drawer-blog-2')">
                     <span class="blog-date">August 2026</span>
                     <h3>Moral vs. Spiritual Religion</h3>
                     <p>Have you ever realized the way you have been raised, especially in the spiritual sense?</p>
-                </div>
-
-                <div class="card" onclick="openDrawer('drawer-blog-1')">
-                    <span class="blog-date">August 2026</span>
-                    <h3>The Foundation of Leadership</h3>
-                    <p>Why listening is the most underrated skill a leader can possess, and how it shaped YegnaBridge.</p>
                 </div>
 
             </div>
@@ -279,19 +291,19 @@
         <section id="work">
             <div class="section-header">03. Selected Work</div>
             <div class="grid">
-                <div class="card" onclick="openDrawer('drawer-yegna')">
+                <div class="card magnetic" onclick="openDrawer('drawer-yegna')">
                     <h3>YegnaBridge</h3>
                     <p>A youth-led charity organization I founded in 2025 to create a support family for those in need.</p>
                 </div>
-                <div class="card" onclick="openDrawer('drawer-math')">
+                <div class="card magnetic" onclick="openDrawer('drawer-math')">
                     <h3>Mathematics Research</h3>
                     <p>Independent research in Number Theory and Linear Algebra, presented at national conferences.</p>
                 </div>
-                <div class="card" onclick="openDrawer('drawer-transcript')">
+                <div class="card magnetic" onclick="openDrawer('drawer-transcript')">
                     <h3>Transcript Archive</h3>
                     <p>A written podcast designed to deeply document conversations with creative people and thinkers.</p>
                 </div>
-                <div class="card" onclick="openDrawer('drawer-design')">
+                <div class="card magnetic" onclick="openDrawer('drawer-design')">
                     <h3>Graphic Design</h3>
                     <p>Self-taught minimalist visual design focusing on brand identity, logos, and organizational marketing.</p>
                 </div>
@@ -330,7 +342,7 @@
                 
                 <form class="subscribe-form" action="https://github.us9.list-manage.com/subscribe/post?u=c8799884f17165c6d6dd31fda&amp;id=9369a95887&amp;f_id=00a555e1f0" method="POST" target="_blank">
                     <input type="email" name="EMAIL" placeholder="Enter your email address" required>
-                    <button type="submit">Subscribe</button>
+                    <button type="submit" class="magnetic">Subscribe</button>
                 </form>
 
             </div>
@@ -342,27 +354,27 @@
                 I am always looking for ways to improve myself and love hearing people's stories. Reach out on any platform below.
             </p>
             <div class="social-grid">
-                <a href="mailto:ephraimteketelg@gmail.com" class="social-link">
+                <a href="mailto:ephraimteketelg@gmail.com" class="social-link magnetic">
                     <i class="fa-regular fa-envelope social-icon"></i>
                     <span class="label">Email</span>
                     <span class="handle">ephraimteketelg@gmail.com</span>
                 </a>
-                <a href="https://t.me/ephraimteketel" target="_blank" class="social-link">
+                <a href="https://t.me/ephraimteketel" target="_blank" class="social-link magnetic">
                     <i class="fa-brands fa-telegram social-icon"></i>
                     <span class="label">Telegram</span>
                     <span class="handle">t.me/ephraimteketel</span>
                 </a>
-                <a href="https://wa.me/251901844806" target="_blank" class="social-link">
+                <a href="https://wa.me/251901844806" target="_blank" class="social-link magnetic">
                     <i class="fa-brands fa-whatsapp social-icon"></i>
                     <span class="label">WhatsApp</span>
                     <span class="handle">+251 901 844 806</span>
                 </a>
-                <a href="https://instagram.com/ephraim_ite" target="_blank" class="social-link">
+                <a href="https://instagram.com/ephraim_ite" target="_blank" class="social-link magnetic">
                     <i class="fa-brands fa-instagram social-icon"></i>
                     <span class="label">Instagram</span>
                     <span class="handle">@ephraim_ite</span>
                 </a>
-                <a href="https://www.linkedin.com/in/ephraim-teketel-2397a1379" target="_blank" class="social-link">
+                <a href="https://www.linkedin.com/in/ephraim-teketel-2397a1379" target="_blank" class="social-link magnetic">
                     <i class="fa-brands fa-linkedin social-icon"></i>
                     <span class="label">LinkedIn</span>
                     <span class="handle">Ephraim Teketel linkedin</span>
@@ -371,7 +383,7 @@
         </footer>
     </div>
 
-    <div class="music-player">
+    <div class="music-player magnetic">
         <audio id="bg-music" loop>
             <source src="song.mp3" type="audio/mpeg">
         </audio>
@@ -387,52 +399,53 @@
     <div class="drawer-overlay" id="drawer-overlay" onclick="closeAllDrawers()"></div>
     
     <div class="drawer reader-mode" id="drawer-blog-2">
-        <button class="close-drawer" onclick="closeAllDrawers()">×</button>
-        <div class="section-header">10:23 PM, FRIDAY | [span_0](start_span)SHINSHICHO, ETHIOPIA[span_0](end_span)</div>
+        <button class="close-drawer magnetic" onclick="closeAllDrawers()">×</button>
+        <div class="section-header">10:23 PM, FRIDAY | SHINSHICHO, ETHIOPIA</div>
         <h2>Moral vs. Spiritual Religion</h2>
         
-        [span_1](start_span)<p>These days I have been stuck thinking about this and I strongly felt that sharing my opinion would be the right approach[span_1](end_span). [span_2](start_span)Have you ever realized the way you have been raised, especially in the spiritual sense[span_2](end_span)? [span_3](start_span)Was it really a real relationship with God, or was it something closer to moralistic religion[span_3](end_span)?</p>
+        <p>These days I have been stuck thinking about this and I strongly felt that sharing my opinion would be the right approach. Have you ever realized the way you have been raised, especially in the spiritual sense? Was it really a real relationship with God, or was it something closer to moralistic religion?</p>
 
-        [span_4](start_span)<p>I genuinely feel that many parents, at least those I have seen, while convincing themselves that they are raising their children spiritually, may actually be creating a difficult or shallow relationship with God for them[span_4](end_span). [span_5](start_span)It is not intentional[span_5](end_span). [span_6](start_span)I believe it is mostly misunderstanding[span_6](end_span). [span_7](start_span)They teach their children about God, morality, what to do and what not to do, make them attend church, and do many religious activities[span_7](end_span). [span_8](start_span)But later, many of those children end up being unfamiliar with God in a personal sense[span_8](end_span). [span_9](start_span)They struggle to understand what a real relationship with God looks like[span_9](end_span). [span_10](start_span)Faith becomes something decent, but distant[span_10](end_span).</p>
+        <p>I genuinely feel that many parents, at least those I have seen, while convincing themselves that they are raising their children spiritually, may actually be creating a difficult or shallow relationship with God for them. It is not intentional. I believe it is mostly misunderstanding. They teach their children about God, morality, what to do and what not to do, make them attend church, and do many religious activities. But later, many of those children end up being unfamiliar with God in a personal sense. They struggle to understand what a real relationship with God looks like. Faith becomes something decent, but distant.</p>
 
-        [span_11](start_span)<p>This is not necessarily because they were not raised in a "spiritual" way[span_11](end_span). [span_12](start_span)It is because they were taught about God, but not introduced to who God is in a lived, relational sense[span_12](end_span). [span_13](start_span)They learned about Christianity, but not necessarily what it means to actually walk with God[span_13](end_span).</p>
+        <p>This is not necessarily because they were not raised in a "spiritual" way. It is because they were taught about God, but not introduced to who God is in a lived, relational sense. They learned about Christianity, but not necessarily what it means to actually walk with God.</p>
 
-        [span_14](start_span)<p>This made me curious, so I tried to check whether this was just my personal thought or something that has been observed more widely[span_14](end_span). [span_15](start_span)I looked deeper into it, and I was honestly surprised by how many related ideas already exist[span_15](end_span). [span_16](start_span)I came across concepts like Moralistic Therapeutic Deism, legalism vs grace in Christianity, the critique of the Pharisees, the idea of the new covenant, and key biblical teachings and verses[span_16](end_span).</p>
+        <p>This made me curious, so I tried to check whether this was just my personal thought or something that has been observed more widely. I looked deeper into it, and I was honestly surprised by how many related ideas already exist. I came across concepts like Moralistic Therapeutic Deism, legalism vs grace in Christianity, the critique of the Pharisees, the idea of the new covenant, and key biblical teachings and verses.</p>
 
         <blockquote>
-            [span_17](start_span)The realization was uncomfortable[span_17](end_span). [span_18](start_span)It felt like many people in the world may already be caught in this without noticing it[span_18](end_span). [span_19](start_span)We were raised morally, but not always spiritually[span_19](end_span). [span_20](start_span)That thought kept repeating in my mind[span_20](end_span).
+            The realization was uncomfortable. It felt like many people in the world may already be caught in this without noticing it. We were raised morally, but not always spiritually. That thought kept repeating in my mind.
         </blockquote>
 
-        [span_21](start_span)<p>Moralistic Therapeutic Deism describes how many people who identify with religion do not actually live out its core beliefs, but instead follow an unofficial belief system[span_21](end_span). [span_22](start_span)At its core, it reduces faith into something simple and minimal: be a good person, try to be happy, and expect God to help when needed[span_22](end_span). [span_23](start_span)It sounds harmless, even positive, but it slowly removes depth from spirituality[span_23](end_span). [span_24](start_span)It turns God into a distant helper rather than the center of life[span_24](end_span).</p>
+        <p>Moralistic Therapeutic Deism describes how many people who identify with religion do not actually live out its core beliefs, but instead follow an unofficial belief system. At its core, it reduces faith into something simple and minimal: be a good person, try to be happy, and expect God to help when needed. It sounds harmless, even positive, but it slowly removes depth from spirituality. It turns God into a distant helper rather than the center of life.</p>
 
-        [span_25](start_span)<p>Then I looked at legalism vs grace in Christianity[span_25](end_span). [span_26](start_span)Legalism is the mindset that acceptance from God is earned through obedience[span_26](end_span). [span_27](start_span)Grace is the idea that acceptance comes first, and obedience flows from that relationship[span_27](end_span). [span_28](start_span)The shift between these two is not small[span_28](end_span). [span_29](start_span)It completely changes whether faith becomes a burden of performance or a response of transformation[span_29](end_span).</p>
+        <p>Then I looked at legalism vs grace in Christianity. Legalism is the mindset that acceptance from God is earned through obedience. Grace is the idea that acceptance comes first, and obedience flows from that relationship. The shift between these two is not small. It completely changes whether faith becomes a burden of performance or a response of transformation.</p>
 
-        [span_30](start_span)<p>This connects strongly to the way Jesus addressed the Pharisees in Matthew 23[span_30](end_span). [span_31](start_span)The issue was not their discipline or their knowledge of the law, but the gap between their external behavior and their internal condition[span_31](end_span). [span_32](start_span)Outwardly correct, inwardly disconnected[span_32](end_span).</p>
+        <p>This connects strongly to the way Jesus addressed the Pharisees in Matthew 23. The issue was not their discipline or their knowledge of the law, but the gap between their external behavior and their internal condition. Outwardly correct, inwardly disconnected.</p>
 
-        [span_33](start_span)<p>The idea of the new covenant in Jeremiah 31:33 goes further[span_33](end_span). [span_34](start_span)It speaks about a time when God's law is not just outside people as rules, but inside them as something written on their hearts[span_34](end_span). [span_35](start_span)That suggests spirituality was always meant to become internal, not just behavioral[span_35](end_span). [span_36](start_span)This is also reflected in the command to love God with all heart, soul, and mind (Deuteronomy 6 and Matthew 22)[span_36](end_span). [span_37](start_span)It shifts the focus from rule-following to relationship, from performance to total inner devotion[span_37](end_span).</p>
+        <p>The idea of the new covenant in Jeremiah 31:33 goes further. It speaks about a time when God's law is not just outside people as rules, but inside them as something written on their hearts. That suggests spirituality was always meant to become internal, not just behavioral. This is also reflected in the command to love God with all heart, soul, and mind (Deuteronomy 6 and Matthew 22). It shifts the focus from rule-following to relationship, from performance to total inner devotion.</p>
 
-        [span_38](start_span)<p>In Galatians 5, the idea of the fruit of the Spirit contrasts with self-effort[span_38](end_span). [span_39](start_span)Growth is described not as forced behavior but as natural fruit from an inner source of life[span_39](end_span). [span_40](start_span)That again points away from external pressure and toward internal change[span_40](end_span).</p>
+        <p>In Galatians 5, the idea of the fruit of the Spirit contrasts with self-effort. Growth is described not as forced behavior but as natural fruit from an inner source of life. That again points away from external pressure and toward internal change.</p>
 
-        [span_41](start_span)<p>Modern thinkers also describe this in different ways[span_41](end_span). [span_42](start_span)Dallas Willard emphasizes spiritual formation as becoming a different kind of person, not just believing differently[span_42](end_span). [span_43](start_span)Henri Nouwen focuses on identity rooted in being loved rather than performing[span_43](end_span). [span_44](start_span)Richard Rohr speaks about moving beyond ego-driven faith into deeper maturity[span_44](end_span). [span_45](start_span)Timothy Keller summarizes it simply as gospel versus religion: acceptance leading to transformation, not transformation earning acceptance[span_45](end_span).</p>
+        <p>Modern thinkers also describe this in different ways. Dallas Willard emphasizes spiritual formation as becoming a different kind of person, not just believing differently. Henri Nouwen focuses on identity rooted in being loved rather than performing. Richard Rohr speaks about moving beyond ego-driven faith into deeper maturity. Timothy Keller summarizes it simply as gospel versus religion: acceptance leading to transformation, not transformation earning acceptance.</p>
 
-        [span_46](start_span)<p>When I connect all of this, a pattern becomes very clear[span_46](end_span). [span_47](start_span)There seems to be a consistent tension in spirituality between two directions[span_47](end_span). [span_48](start_span)One direction is external: rules, behavior, identity based on performance, religion as duty[span_48](end_span). [span_49](start_span)The other direction is internal: heart transformation, relationship, identity based on grace, and obedience as a result rather than a requirement[span_49](end_span).</p>
+        <p>When I connect all of this, a pattern becomes very clear. There seems to be a consistent tension in spirituality between two directions. One direction is external: rules, behavior, identity based on performance, religion as duty. The other direction is internal: heart transformation, relationship, identity based on grace, and obedience as a result rather than a requirement.</p>
 
-        [span_50](start_span)<p>This made me reflect again on what many people, including myself, might have experienced growing up[span_50](end_span). [span_51](start_span)We may have learned how to act religiously, but not always how to actually know God in a personal and transformative way[span_51](end_span). [span_52](start_span)And maybe that is the real question I am left with[span_52](end_span).</p>
+        <p>This made me reflect again on what many people, including myself, might have experienced growing up. We may have learned how to act religiously, but not always how to actually know God in a personal and transformative way. And maybe that is the real question I am left with.</p>
 
-        [span_53](start_span)<p><strong>እግዚአብሔር ይርዳን።</strong><br>- Ephraim Teketel[span_53](end_span)</p>
-    </div>
+        <p><strong>እግዚአብሔር ይርዳን።</strong><br>- Ephraim Teketel</p>
 
-    <div class="drawer reader-mode" id="drawer-blog-1">
-        <button class="close-drawer" onclick="closeAllDrawers()">×</button>
-        <div class="section-header">August 2026</div>
-        <h2>The Foundation of Leadership</h2>
-        <p>Leadership is often misunderstood as the ability to tell people what to do. From my experience, especially in building YegnaBridge, I have realized it is exactly the opposite.</p>
-        <p>Leadership begins with listening. Before judging, deciding, or trying to influence others, we must first deeply understand them. When we started working with families in need, our first instinct was to just give them what we thought they needed. But true impact only happened when we sat down and listened to a mother explain her actual daily struggles.</p>
-        <p>Because we listened, we helped her start a small business instead of just providing temporary aid. That is the essence of genuine leadership: facilitating someone else's growth based on their reality, not your assumptions.</p>
+        <div class="share-section">
+            <h4>Share this piece</h4>
+            <div class="share-row">
+                <a href="#" class="share-btn magnetic" onclick="shareTo('whatsapp')"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="#" class="share-btn magnetic" onclick="shareTo('telegram')"><i class="fa-brands fa-telegram"></i></a>
+                <a href="#" class="share-btn magnetic" onclick="shareTo('twitter')"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="share-btn magnetic" onclick="shareTo('linkedin')"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
     </div>
 
     <div class="drawer reader-mode" id="drawer-yegna">
-        <button class="close-drawer" onclick="closeAllDrawers()">×</button>
+        <button class="close-drawer magnetic" onclick="closeAllDrawers()">×</button>
         <div class="section-header">Organization</div>
         <h2>YegnaBridge</h2>
         <p>I am the Founder and Executive Director of YegnaBridge, a youth-led charity organization founded in 2025. Our mission is not simply to provide charity but to create a family where people genuinely care for and support one another.</p>
@@ -447,7 +460,7 @@
     </div>
 
     <div class="drawer reader-mode" id="drawer-math">
-        <button class="close-drawer" onclick="closeAllDrawers()">×</button>
+        <button class="close-drawer magnetic" onclick="closeAllDrawers()">×</button>
         <div class="section-header">Research</div>
         <h2>Mathematics</h2>
         <p>I am an independent mathematical researcher, conference presenter, and certified EMPA Ambassador.</p>
@@ -460,7 +473,7 @@
     </div>
 
     <div class="drawer reader-mode" id="drawer-transcript">
-        <button class="close-drawer" onclick="closeAllDrawers()">×</button>
+        <button class="close-drawer magnetic" onclick="closeAllDrawers()">×</button>
         <div class="section-header">Project</div>
         <h2>Transcript Archive</h2>
         <p>Transcript Archive is one of my favorite personal projects. It is a written podcast designed to meticulously document conversations with creative people, leaders, and thinkers.</p>
@@ -469,7 +482,7 @@
     </div>
 
     <div class="drawer reader-mode" id="drawer-design">
-        <button class="close-drawer" onclick="closeAllDrawers()">×</button>
+        <button class="close-drawer magnetic" onclick="closeAllDrawers()">×</button>
         <div class="section-header">Visuals</div>
         <h2>Graphic Design</h2>
         <p>I am a self-taught graphic designer who started learning the craft in 2025. My visual design style is heavily focused on being minimalist, simple, clean, and highly functional.</p>
@@ -482,7 +495,7 @@
     </div>
 
     <script>
-        // Theme Toggle
+        // 1. Theme Toggle
         const themeBtn = document.getElementById('theme-toggle');
         const html = document.documentElement;
         themeBtn.addEventListener('click', () => {
@@ -495,7 +508,7 @@
             }
         });
 
-        // Premium Typewriter Effect
+        // 2. Typewriter Effect
         const words = ["Curious learner.", "Hustler.", "Leader.", "Listener.", "Dreamer.", "Self-driven worker.", "Lifelong learner."];
         let wordIdx = 0; let charIdx = 0; let isDeleting = false;
         const typeText = document.getElementById('type-text');
@@ -519,7 +532,7 @@
         }
         document.addEventListener("DOMContentLoaded", typeWriter);
 
-        // Drawer Logic
+        // 3. Drawer Logic
         const overlay = document.getElementById('drawer-overlay');
         function openDrawer(id) {
             overlay.classList.add('active');
@@ -530,9 +543,10 @@
             overlay.classList.remove('active');
             document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
             document.body.style.overflow = 'auto';
+            document.getElementById('progress-bar').style.width = '0%'; // Reset bar on close
         }
 
-        // Music Player Logic
+        // 4. Music Player
         const audio = document.getElementById('bg-music');
         const playBtn = document.getElementById('play-pause-btn');
         let isPlaying = false;
@@ -548,9 +562,51 @@
             isPlaying = !isPlaying;
         });
 
-        // DOM Content Loaded extra functions
+        // 5. Dynamic Reading Progress Bar
+        function updateProgressBar(scrollElement) {
+            const scrolled = (scrollElement.scrollTop / (scrollElement.scrollHeight - scrollElement.clientHeight)) * 100;
+            document.getElementById('progress-bar').style.width = (scrolled || 0) + '%';
+        }
+        // Main page scroll
+        window.addEventListener('scroll', () => {
+            if(!overlay.classList.contains('active')) {
+                updateProgressBar(document.documentElement);
+            }
+        });
+        // Drawer scroll
+        document.querySelectorAll('.drawer').forEach(drawer => {
+            drawer.addEventListener('scroll', (e) => updateProgressBar(e.target));
+        });
+
+        // 6. Magnetic Elements Effect (For Desktop)
+        document.querySelectorAll('.magnetic').forEach(elem => {
+            elem.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                this.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            elem.addEventListener('mouseleave', function() {
+                this.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+        // 7. Dynamic Share Buttons Logic
+        function shareTo(platform) {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent("Check out this essay by Ephraim Teketel: Moral vs. Spiritual Religion");
+            let shareUrl = '';
+            
+            if (platform === 'whatsapp') shareUrl = `https://wa.me/?text=${text}%20${url}`;
+            if (platform === 'telegram') shareUrl = `https://t.me/share/url?url=${url}&text=${text}`;
+            if (platform === 'twitter') shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+            if (platform === 'linkedin') shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+            
+            window.open(shareUrl, '_blank');
+        }
+
+        // 8. Cleanup citations from PDF parsing
         document.addEventListener("DOMContentLoaded", function() {
-            // Automatically cleans up the essay text formatting so it displays flawlessly to your users
             const blog2 = document.getElementById('drawer-blog-2');
             if (blog2) {
                 blog2.innerHTML = blog2.innerHTML.replace(/\*\]/g, '');
