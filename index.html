@@ -69,9 +69,7 @@
         .curtain-logo {
             width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 3px solid var(--accent);
-            padding: 4px;
-            background-color: var(--bg-primary);
+            border: 3px solid var(--accent); padding: 4px; background-color: var(--bg-primary);
             animation: pulseFade 1.5s ease-in-out infinite alternate;
         }
         @keyframes pulseFade { 0% { transform: scale(0.95); opacity: 0.7; } 100% { transform: scale(1.05); opacity: 1; } }
@@ -113,20 +111,47 @@
             position: fixed; top: 0; left: 0; width: 100%;
             background: var(--nav-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
-            z-index: 1000; padding: 15px 0; transition: background 0.5s ease;
+            z-index: 2005; padding: 15px 0; transition: background 0.5s ease;
         }
-        
         .nav-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 5%; }
-        
-        .logo { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 1.15rem; letter-spacing: -0.5px; }
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 1.15rem; letter-spacing: -0.5px; z-index: 2006; }
         .nav-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color); transition: all 0.3s ease; }
         .logo:hover .nav-avatar { transform: scale(1.05) rotate(5deg); border-color: var(--accent); }
         
+        .nav-controls { display: flex; align-items: center; gap: 20px; z-index: 2006; }
         .theme-btn {
             background: transparent; border: 1px solid var(--border-color); color: var(--text-primary);
             padding: 8px 20px; border-radius: 50px; cursor: pointer; font-family: var(--font-ui); font-size: 0.9rem;
         }
         .theme-btn:hover { background: var(--text-primary); color: var(--bg-primary); }
+
+        /* HAMBURGER MENU */
+        .hamburger { display: flex; flex-direction: column; gap: 6px; cursor: pointer; padding: 5px; }
+        .hamburger span { width: 30px; height: 2px; background: var(--text-primary); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 2px; }
+        .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); background: var(--accent); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); background: var(--accent); }
+
+        /* FULL-SCREEN NAVIGATION OVERLAY */
+        .fullscreen-menu {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--nav-glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            z-index: 2004; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
+        .fullscreen-menu.active { opacity: 1; pointer-events: auto; }
+        .fullscreen-menu a {
+            font-size: 2.5rem; font-weight: 600; margin: 15px 0; color: var(--text-primary);
+            text-decoration: none; letter-spacing: -1px; transition: color 0.3s ease, transform 0.3s ease;
+            transform: translateY(20px); opacity: 0;
+        }
+        .fullscreen-menu.active a { transform: translateY(0); opacity: 1; }
+        .fullscreen-menu.active a:nth-child(1) { transition-delay: 0.1s; }
+        .fullscreen-menu.active a:nth-child(2) { transition-delay: 0.2s; }
+        .fullscreen-menu.active a:nth-child(3) { transition-delay: 0.3s; }
+        .fullscreen-menu.active a:nth-child(4) { transition-delay: 0.4s; }
+        .fullscreen-menu.active a:nth-child(5) { transition-delay: 0.5s; }
+        .fullscreen-menu a:hover { color: var(--accent); transform: scale(1.05); }
 
         /* Magnetic Elements Base */
         .magnetic { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -144,7 +169,7 @@
         .highlight { color: var(--text-primary); font-weight: 500; }
 
         /* Section Formatting */
-        section { padding: 100px 0; border-top: 1px solid var(--border-color); }
+        section { padding: 100px 0; border-top: 1px solid var(--border-color); scroll-margin-top: 100px; }
         .section-header { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-secondary); margin-bottom: 40px; font-weight: 600; }
 
         /* Editorial Story Section */
@@ -159,8 +184,7 @@
         .card {
             background: var(--bg-secondary); border: 1px solid var(--border-color);
             padding: 40px; border-radius: 16px; cursor: pointer;
-            position: relative; overflow: hidden;
-            transform-style: preserve-3d; transition: border-color 0.3s ease;
+            position: relative; overflow: hidden; transform-style: preserve-3d; transition: border-color 0.3s ease;
         }
         .card::before {
             content: "Explore ↗"; position: absolute; top: 30px; right: 30px;
@@ -179,19 +203,15 @@
         .info-list li:last-child { border-bottom: none; }
         .info-list strong { color: var(--text-primary); display: block; margin-bottom: 4px; }
 
-        /* NEWSLETTER SUBSCRIPTION STYLES */
+        /* NEWSLETTER SUBSCRIPTION */
         .newsletter-box {
             background: var(--bg-secondary); border: 1px solid var(--border-color);
-            padding: 60px 40px; border-radius: 16px; text-align: center;
-            max-width: 800px; margin: 0 auto; transition: all 0.3s ease;
+            padding: 60px 40px; border-radius: 16px; text-align: center; max-width: 800px; margin: 0 auto; transition: all 0.3s ease;
         }
         .newsletter-box:hover { border-color: var(--text-primary); }
         .newsletter-box h2 { font-size: 2.2rem; margin-bottom: 15px; letter-spacing: -1px; }
         .newsletter-box p { color: var(--text-secondary); margin-bottom: 30px; }
-        
-        .subscribe-form {
-            display: flex; gap: 10px; max-width: 500px; margin: 0 auto; flex-wrap: wrap; justify-content: center;
-        }
+        .subscribe-form { display: flex; gap: 10px; max-width: 500px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
         .subscribe-form input {
             flex: 1; min-width: 250px; padding: 15px 25px; border-radius: 50px;
             border: 1px solid var(--border-color); background: var(--bg-primary);
@@ -208,13 +228,12 @@
         .drawer-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
-            z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
+            z-index: 3000; opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
         }
         .drawer-overlay.active { opacity: 1; pointer-events: auto; }
-        
         .drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 650px; height: 100vh;
-            background: var(--bg-primary); z-index: 2001; transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            background: var(--bg-primary); z-index: 3001; transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             overflow-y: auto; padding: 60px 5%; box-shadow: -10px 0 40px rgba(0,0,0,0.1);
         }
         .drawer.active { right: 0; }
@@ -227,24 +246,12 @@
         .drawer h2 { font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 20px; font-weight: 600; line-height: 1.2; }
         .drawer h4 { font-size: 1.2rem; margin: 30px 0 10px; font-weight: 600; }
         
-        /* Drawer Reader Mode (For Blogs) */
         .reader-mode p { font-family: var(--font-story); font-size: 1.2rem; line-height: 1.9; color: var(--text-primary); margin-bottom: 25px; }
         .reader-mode ul { margin: 0 0 25px 20px; font-family: var(--font-story); font-size: 1.2rem; line-height: 1.9; }
-
-        /* Share Section */
-        .share-section { margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 30px; text-align: center; }
-        .share-section h4 { margin-bottom: 20px; font-size: 1rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
-        .share-row { display: flex; justify-content: center; gap: 15px; }
-        .share-btn { 
-            width: 50px; height: 50px; border-radius: 50%; background: var(--bg-secondary); border: 1px solid var(--border-color);
-            display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--text-primary);
-        }
-        .share-btn:hover { background: var(--text-primary); color: var(--bg-primary); border-color: var(--text-primary); }
 
         /* Footer & Socials */
         footer { padding: 80px 0 120px; border-top: 1px solid var(--border-color); margin-top: 50px; }
         .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px; }
-        
         .social-link {
             display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 20px;
             background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color); text-align: center;
@@ -255,7 +262,7 @@
         .social-link span.label { font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
         .social-link span.handle { font-size: 1.05rem; font-weight: 500; color: var(--text-primary); word-break: break-word; }
 
-        /* Floating Music Player */
+        /* FLOATING MUSIC PLAYER & AUDIO VISUALIZER */
         .music-player {
             position: fixed; bottom: 30px; right: 30px;
             background: var(--nav-glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -269,8 +276,17 @@
             align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem;
         }
         .track-info { display: flex; flex-direction: column; }
-        .track-name { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+        .track-name { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; display: flex; align-items: center; gap: 8px; }
         .artist-name { font-size: 0.75rem; color: var(--text-secondary); }
+        
+        /* The Equalizer Bars */
+        .visualizer { display: flex; gap: 2px; align-items: flex-end; height: 10px; }
+        .bar { width: 3px; height: 3px; background: var(--accent); border-radius: 3px; transition: height 0.1s ease; }
+        .visualizer.active .bar { animation: eq 0.6s ease-in-out infinite alternate; }
+        .visualizer.active .bar:nth-child(1) { animation-delay: 0s; }
+        .visualizer.active .bar:nth-child(2) { animation-delay: 0.2s; }
+        .visualizer.active .bar:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes eq { 0% { height: 3px; } 100% { height: 10px; } }
     </style>
 </head>
 <body>
@@ -290,9 +306,22 @@
                     <img src="avatar.jpg" alt="Avatar" class="nav-avatar">
                     Ephraim Teketel
                 </div>
-                <button class="theme-btn magnetic" id="theme-toggle">Dark Mode</button>
+                <div class="nav-controls">
+                    <button class="theme-btn magnetic" id="theme-toggle">Dark Mode</button>
+                    <div class="hamburger magnetic" onclick="toggleMenu()">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
             </div>
         </nav>
+
+        <div class="fullscreen-menu" id="mobile-menu">
+            <a href="#story" onclick="toggleMenu()">The Story</a>
+            <a href="#blog" onclick="toggleMenu()">Writings</a>
+            <a href="#work" onclick="toggleMenu()">Projects</a>
+            <a href="#details" onclick="toggleMenu()">Details</a>
+            <a href="#newsletter" onclick="toggleMenu()">Subscribe</a>
+        </div>
 
         <div class="container">
             <header class="hero">
@@ -440,7 +469,12 @@
                 <i class="fa-solid fa-play"></i>
             </button>
             <div class="track-info">
-                <span class="track-name">Bicha Liben Degifew</span>
+                <span class="track-name">
+                    Bicha Liben Degifew
+                    <div class="visualizer" id="audio-visualizer">
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                    </div>
+                </span>
                 <span class="artist-name">Hanna Tekle</span>
             </div>
         </div>
@@ -480,16 +514,6 @@
         <p>This made me reflect again on what many people, including myself, might have experienced growing up. We may have learned how to act religiously, but not always how to actually know God in a personal and transformative way. And maybe that is the real question I am left with.</p>
 
         <p><strong>እግዚአብሔር ይርዳን።</strong><br>- Ephraim Teketel</p>
-
-        <div class="share-section">
-            <h4>Share this piece</h4>
-            <div class="share-row">
-                <a href="#" class="share-btn magnetic" onclick="shareTo('whatsapp')"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="#" class="share-btn magnetic" onclick="shareTo('telegram')"><i class="fa-brands fa-telegram"></i></a>
-                <a href="#" class="share-btn magnetic" onclick="shareTo('twitter')"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="#" class="share-btn magnetic" onclick="shareTo('linkedin')"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-        </div>
     </div>
 
     <div class="drawer reader-mode" id="drawer-yegna">
@@ -547,10 +571,23 @@
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('intro-curtain').classList.add('hidden');
-            }, 800); // 800ms delay to let the user see the pulsing logo
+            }, 800);
         });
 
-        // 2. Theme Toggle
+        // 2. Hamburger Menu Toggle Logic
+        function toggleMenu() {
+            document.querySelector('.hamburger').classList.toggle('active');
+            document.getElementById('mobile-menu').classList.toggle('active');
+            
+            // If the menu is open, we stop scrolling in the background
+            if (document.getElementById('mobile-menu').classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // 3. Theme Toggle
         const themeBtn = document.getElementById('theme-toggle');
         const html = document.documentElement;
         themeBtn.addEventListener('click', () => {
@@ -563,7 +600,7 @@
             }
         });
 
-        // 3. Typewriter Effect
+        // 4. Typewriter Effect
         const words = ["Curious learner.", "Hustler.", "Leader.", "Listener.", "Dreamer.", "Self-driven worker.", "Lifelong learner."];
         let wordIdx = 0; let charIdx = 0; let isDeleting = false;
         const typeText = document.getElementById('type-text');
@@ -587,7 +624,7 @@
         }
         document.addEventListener("DOMContentLoaded", typeWriter);
 
-        // 4. Drawer Logic & iOS Dim/Shrink Effect
+        // 5. Drawer Logic & iOS Dim/Shrink Effect
         const overlay = document.getElementById('drawer-overlay');
         const mainWrapper = document.getElementById('main-wrapper');
         
@@ -608,23 +645,26 @@
             document.getElementById('progress-bar').style.width = '0%';
         }
 
-        // 5. Music Player
+        // 6. Music Player with Visualizer Sync
         const audio = document.getElementById('bg-music');
         const playBtn = document.getElementById('play-pause-btn');
+        const visualizer = document.getElementById('audio-visualizer');
         let isPlaying = false;
 
         playBtn.addEventListener('click', () => {
             if (isPlaying) {
                 audio.pause();
                 playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                visualizer.classList.remove('active'); // Stop jumping
             } else {
                 audio.play();
                 playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                visualizer.classList.add('active'); // Start jumping
             }
             isPlaying = !isPlaying;
         });
 
-        // 6. Dynamic Reading Progress Bar
+        // 7. Dynamic Reading Progress Bar
         function updateProgressBar(scrollElement) {
             const scrolled = (scrollElement.scrollTop / (scrollElement.scrollHeight - scrollElement.clientHeight)) * 100;
             document.getElementById('progress-bar').style.width = (scrolled || 0) + '%';
@@ -638,10 +678,10 @@
             drawer.addEventListener('scroll', (e) => updateProgressBar(e.target));
         });
 
-        // 7. 3D Card Tilt Effect
+        // 8. 3D Card Tilt Effect
         document.querySelectorAll('.tilt-card').forEach(card => {
             card.addEventListener('mouseenter', () => {
-                card.style.transition = 'none'; // remove delay while tracking
+                card.style.transition = 'none';
             });
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
@@ -659,7 +699,7 @@
             });
         });
 
-        // 8. Magnetic Elements Effect (For Buttons & Icons)
+        // 9. Magnetic Elements Effect (For Buttons & Icons)
         document.querySelectorAll('.magnetic').forEach(elem => {
             elem.addEventListener('mousemove', function(e) {
                 const rect = this.getBoundingClientRect();
@@ -671,20 +711,6 @@
                 this.style.transform = 'translate(0px, 0px)';
             });
         });
-
-        // 9. Dynamic Share Buttons Logic
-        function shareTo(platform) {
-            const url = encodeURIComponent(window.location.href);
-            const text = encodeURIComponent("Check out this essay by Ephraim Teketel: Moral vs. Spiritual Religion");
-            let shareUrl = '';
-            
-            if (platform === 'whatsapp') shareUrl = `https://wa.me/?text=${text}%20${url}`;
-            if (platform === 'telegram') shareUrl = `https://t.me/share/url?url=${url}&text=${text}`;
-            if (platform === 'twitter') shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
-            if (platform === 'linkedin') shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-            
-            window.open(shareUrl, '_blank');
-        }
 
         // 10. Cleanup citations from PDF parsing
         document.addEventListener("DOMContentLoaded", function() {
