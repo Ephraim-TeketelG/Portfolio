@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* Premium CSS Variables */
         :root {
             --bg-primary: #fcfcfc;
             --bg-secondary: #f3f4f6;
@@ -22,6 +23,7 @@
             --font-story: 'Lora', serif;
         }
 
+        /* True Black/White Dark Mode */
         [data-theme="dark"] {
             --bg-primary: #000000;
             --bg-secondary: #0a0a0a;
@@ -32,6 +34,7 @@
             --nav-glass: rgba(0, 0, 0, 0.85);
         }
 
+        /* Global Reset */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
@@ -47,6 +50,7 @@
         a { color: var(--text-primary); text-decoration: none; transition: color 0.3s ease; }
         a:hover { color: var(--accent); }
 
+        /* BULLETPROOF FADE-IN */
         .container { 
             max-width: 1100px; margin: 0 auto; padding: 0 5%; 
             animation: globalFadeIn 1.2s ease-out forwards;
@@ -56,6 +60,7 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        /* Premium Sticky Navigation */
         nav {
             position: fixed; top: 0; left: 0; width: 100%;
             background: var(--nav-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -73,6 +78,7 @@
         }
         .theme-btn:hover { background: var(--text-primary); color: var(--bg-primary); }
 
+        /* Hero Section */
         .hero { padding: 200px 0 120px; min-height: 85vh; display: flex; flex-direction: column; justify-content: center; }
         .hero h1 { font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 600; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px; }
         
@@ -83,15 +89,19 @@
         .hero p { font-size: 1.25rem; color: var(--text-secondary); max-width: 750px; margin-bottom: 20px; }
         .highlight { color: var(--text-primary); font-weight: 500; }
 
+        /* Section Formatting */
         section { padding: 100px 0; border-top: 1px solid var(--border-color); }
         .section-header { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-secondary); margin-bottom: 40px; font-weight: 600; }
 
+        /* Editorial Story Section */
         .story-content { font-family: var(--font-story); font-size: 1.25rem; line-height: 2; max-width: 800px; margin: 0 auto; color: var(--text-primary); }
         .story-content p { margin-bottom: 30px; }
         .story-content blockquote { border-left: 4px solid var(--text-primary); padding-left: 20px; font-style: italic; margin: 40px 0; color: var(--text-secondary); font-size: 1.4rem; }
 
+        /* Grid Layouts */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
 
+        /* Premium Interactive Cards (Projects & Blog) */
         .card {
             background: var(--bg-secondary); border: 1px solid var(--border-color);
             padding: 40px; border-radius: 16px; cursor: pointer;
@@ -108,6 +118,7 @@
         .card p { color: var(--text-secondary); font-size: 1.05rem; margin: 0; }
         .blog-date { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 10px; display: block; font-weight: 600;}
 
+        /* Information Lists */
         .info-block h3 { font-size: 1.4rem; margin-bottom: 20px; font-weight: 600; }
         .info-list { list-style: none; color: var(--text-secondary); }
         .info-list li { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
@@ -144,6 +155,7 @@
         }
         .subscribe-form button:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
 
+        /* Sliding Drawer */
         .drawer-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
@@ -166,9 +178,11 @@
         .drawer h2 { font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 20px; font-weight: 600; line-height: 1.2; }
         .drawer h4 { font-size: 1.2rem; margin: 30px 0 10px; font-weight: 600; }
         
+        /* Drawer Reader Mode (For Blogs) */
         .reader-mode p { font-family: var(--font-story); font-size: 1.2rem; line-height: 1.9; color: var(--text-primary); margin-bottom: 25px; }
         .reader-mode ul { margin: 0 0 25px 20px; font-family: var(--font-story); font-size: 1.2rem; line-height: 1.9; }
 
+        /* Footer & Socials */
         footer { padding: 80px 0 120px; border-top: 1px solid var(--border-color); margin-top: 50px; }
         .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px; }
         
@@ -183,6 +197,7 @@
         .social-link span.label { font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
         .social-link span.handle { font-size: 1.05rem; font-weight: 500; color: var(--text-primary); word-break: break-word; }
 
+        /* Floating Music Player */
         .music-player {
             position: fixed; bottom: 30px; right: 30px;
             background: var(--nav-glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -307,7 +322,7 @@
                 <h2>Join my digital circle.</h2>
                 <p>Get an email whenever I publish a new edition of the Transcript Archive or write a new blog post. No spam, just ideas.</p>
                 
-                <form class="subscribe-form" action="#" method="POST" target="_blank">
+                <form class="subscribe-form" action="https://github.us9.list-manage.com/subscribe/post?u=c8799884f17165c6d6dd31fda&amp;id=9369a95887&amp;f_id=00a555e1f0" method="POST" target="_blank">
                     <input type="email" name="EMAIL" placeholder="Enter your email address" required>
                     <button type="submit">Subscribe</button>
                 </form>
