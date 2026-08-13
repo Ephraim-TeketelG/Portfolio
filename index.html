@@ -50,7 +50,7 @@
         a { color: var(--text-primary); text-decoration: none; transition: color 0.3s ease; }
         a:hover { color: var(--accent); }
 
-        /* CUSTOM SCROLLBAR & TEXT HIGHLIGHT */
+        /* SCROLLBAR & TEXT HIGHLIGHT */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
         ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
@@ -58,21 +58,42 @@
         ::selection { background: var(--accent); color: #ffffff; }
         ::-moz-selection { background: var(--accent); color: #ffffff; }
 
-        /* APPLE iOS SHRINK EFFECT */
+        /* THE CURTAIN REVEAL */
+        #intro-curtain {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: var(--bg-primary); z-index: 999999;
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        #intro-curtain.hidden { transform: translateY(-100%); }
+        .curtain-logo {
+            width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: pulseFade 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes pulseFade { 0% { transform: scale(0.95); opacity: 0.7; } 100% { transform: scale(1.05); opacity: 1; } }
+
+        /* APPLE iOS SHRINK EFFECT & ZEN BACKGROUND */
         #main-wrapper {
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.5s ease;
             background-color: var(--bg-primary);
-            min-height: 100vh;
-            width: 100%;
-            position: relative;
-            z-index: 1; 
+            min-height: 100vh; width: 100%; position: relative; z-index: 1; 
         }
         .ios-shrink {
-            transform: scale(0.93) translateY(2vh);
-            border-radius: 24px;
-            overflow: hidden;
-            pointer-events: none;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: scale(0.93) translateY(2vh); border-radius: 24px;
+            overflow: hidden; pointer-events: none; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        
+        .ambient-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+            background: radial-gradient(circle at 15% 30%, rgba(37, 99, 235, 0.03), transparent 40%),
+                        radial-gradient(circle at 85% 60%, rgba(139, 92, 246, 0.03), transparent 40%);
+            transition: background 0.5s ease;
+        }
+        [data-theme="dark"] .ambient-bg {
+            background: radial-gradient(circle at 15% 30%, rgba(37, 99, 235, 0.07), transparent 40%),
+                        radial-gradient(circle at 85% 60%, rgba(139, 92, 246, 0.07), transparent 40%);
         }
 
         /* Reading Progress Bar */
@@ -82,26 +103,21 @@
             transition: width 0.1s ease-out; pointer-events: none;
         }
 
-        /* BULLETPROOF FADE-IN */
-        .container { 
-            max-width: 1100px; margin: 0 auto; padding: 0 5%; 
-            animation: globalFadeIn 1.2s ease-out forwards;
-        }
-        @keyframes globalFadeIn {
-            0% { opacity: 0; transform: translateY(15px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 5%; }
 
         /* Premium Sticky Navigation */
         nav {
             position: fixed; top: 0; left: 0; width: 100%;
             background: var(--nav-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
-            z-index: 1000; padding: 18px 0; transition: background 0.5s ease;
+            z-index: 1000; padding: 15px 0; transition: background 0.5s ease;
         }
         
         .nav-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 5%; }
-        .logo { font-weight: 600; font-size: 1.2rem; letter-spacing: -0.5px; }
+        
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 1.15rem; letter-spacing: -0.5px; }
+        .nav-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color); transition: all 0.3s ease; }
+        .logo:hover .nav-avatar { transform: scale(1.05) rotate(5deg); border-color: var(--accent); }
         
         .theme-btn {
             background: transparent; border: 1px solid var(--border-color); color: var(--text-primary);
@@ -136,21 +152,22 @@
         /* Grid Layouts */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
 
-        /* Premium Interactive Cards */
+        /* Premium Interactive 3D Cards */
         .card {
             background: var(--bg-secondary); border: 1px solid var(--border-color);
             padding: 40px; border-radius: 16px; cursor: pointer;
             position: relative; overflow: hidden;
+            transform-style: preserve-3d; transition: border-color 0.3s ease;
         }
         .card::before {
             content: "Explore ↗"; position: absolute; top: 30px; right: 30px;
             font-size: 0.9rem; opacity: 0; transition: opacity 0.3s ease; color: var(--text-secondary);
         }
         .card:hover { border-color: var(--text-primary); }
-        .card:hover::before { opacity: 1; }
-        .card h3 { font-size: 1.8rem; margin-bottom: 15px; font-weight: 600; letter-spacing: -0.5px; }
-        .card p { color: var(--text-secondary); font-size: 1.05rem; margin: 0; }
-        .blog-date { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 10px; display: block; font-weight: 600;}
+        .card:hover::before { opacity: 1; transform: translateZ(20px); }
+        .card h3 { font-size: 1.8rem; margin-bottom: 15px; font-weight: 600; letter-spacing: -0.5px; transform: translateZ(30px); }
+        .card p { color: var(--text-secondary); font-size: 1.05rem; margin: 0; transform: translateZ(20px); }
+        .blog-date { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 10px; display: block; font-weight: 600; transform: translateZ(20px);}
 
         /* Information Lists */
         .info-block h3 { font-size: 1.4rem; margin-bottom: 20px; font-weight: 600; }
@@ -170,21 +187,17 @@
         .newsletter-box p { color: var(--text-secondary); margin-bottom: 30px; }
         
         .subscribe-form {
-            display: flex; gap: 10px; max-width: 500px; margin: 0 auto;
-            flex-wrap: wrap; justify-content: center;
+            display: flex; gap: 10px; max-width: 500px; margin: 0 auto; flex-wrap: wrap; justify-content: center;
         }
         .subscribe-form input {
             flex: 1; min-width: 250px; padding: 15px 25px; border-radius: 50px;
             border: 1px solid var(--border-color); background: var(--bg-primary);
-            color: var(--text-primary); font-family: var(--font-ui); font-size: 1rem;
-            outline: none; transition: border-color 0.3s ease;
+            color: var(--text-primary); font-family: var(--font-ui); font-size: 1rem; outline: none; transition: border-color 0.3s ease;
         }
         .subscribe-form input:focus { border-color: var(--accent); }
         .subscribe-form button {
-            padding: 15px 35px; border-radius: 50px; border: none;
-            background: var(--text-primary); color: var(--bg-primary);
-            font-family: var(--font-ui); font-weight: 600; font-size: 1rem;
-            cursor: pointer; transition: all 0.3s ease;
+            padding: 15px 35px; border-radius: 50px; border: none; background: var(--text-primary); color: var(--bg-primary);
+            font-family: var(--font-ui); font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s ease;
         }
         .subscribe-form button:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
 
@@ -215,39 +228,8 @@
         .reader-mode p { font-family: var(--font-story); font-size: 1.2rem; line-height: 1.9; color: var(--text-primary); margin-bottom: 25px; }
         .reader-mode ul { margin: 0 0 25px 20px; font-family: var(--font-story); font-size: 1.2rem; line-height: 1.9; }
 
-        /* PERSISTENT REACTION / APPLAUSE BUTTON */
-        .applause-container { display: flex; justify-content: center; margin: 50px 0 20px; position: relative; }
-        .clap-btn {
-            background: var(--bg-secondary); border: 1px solid var(--border-color);
-            padding: 12px 25px; border-radius: 50px; font-size: 1.1rem; color: var(--text-primary);
-            display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.3s ease;
-            font-family: var(--font-ui); font-weight: 600; outline: none; user-select: none;
-        }
-        .clap-btn:hover { border-color: var(--text-primary); transform: translateY(-3px); }
-        .clap-btn:active { transform: translateY(0) scale(0.95); }
-        .clap-btn i { font-size: 1.3rem; color: var(--text-secondary); transition: color 0.3s ease; }
-        
-        /* Active reacted state */
-        .clap-btn.reacted {
-            border-color: var(--accent);
-            background: rgba(37, 99, 235, 0.08);
-            color: var(--accent);
-        }
-        .clap-btn.reacted i { color: var(--accent); }
-
-        /* Floating Clap Animation */
-        .floating-clap {
-            position: absolute; font-size: 1.8rem; pointer-events: none;
-            animation: floatUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            z-index: 100;
-        }
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
-            100% { opacity: 0; transform: translateY(-80px) scale(1.5) rotate(15deg); }
-        }
-
         /* Share Section */
-        .share-section { margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 30px; text-align: center; }
+        .share-section { margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 30px; text-align: center; }
         .share-section h4 { margin-bottom: 20px; font-size: 1rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
         .share-row { display: flex; justify-content: center; gap: 15px; }
         .share-btn { 
@@ -262,8 +244,7 @@
         
         .social-link {
             display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 20px;
-            background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);
-            text-align: center;
+            background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color); text-align: center;
         }
         .social-link:hover { border-color: var(--text-primary); background: transparent; }
         .social-icon { font-size: 2rem; margin-bottom: 15px; color: var(--text-primary); transition: color 0.3s ease; }
@@ -291,12 +272,21 @@
 </head>
 <body>
 
+    <div id="intro-curtain">
+        <img src="avatar.jpg" alt="Logo" class="curtain-logo">
+    </div>
+
     <div id="progress-bar"></div>
 
     <div id="main-wrapper">
+        <div class="ambient-bg"></div>
+
         <nav>
             <div class="nav-inner">
-                <div class="logo">Ephraim Teketel</div>
+                <div class="logo">
+                    <img src="avatar.jpg" alt="Avatar" class="nav-avatar">
+                    Ephraim Teketel
+                </div>
                 <button class="theme-btn magnetic" id="theme-toggle">Dark Mode</button>
             </div>
         </nav>
@@ -336,7 +326,7 @@
                 <div class="section-header">02. Writings & Thoughts</div>
                 <div class="grid">
                     
-                    <div class="card magnetic" onclick="openDrawer('drawer-blog-2')">
+                    <div class="card tilt-card" onclick="openDrawer('drawer-blog-2')">
                         <span class="blog-date">August 2026</span>
                         <h3>Moral vs. Spiritual Religion</h3>
                         <p>Have you ever realized the way you have been raised, especially in the spiritual sense?</p>
@@ -348,19 +338,19 @@
             <section id="work">
                 <div class="section-header">03. Selected Work</div>
                 <div class="grid">
-                    <div class="card magnetic" onclick="openDrawer('drawer-yegna')">
+                    <div class="card tilt-card" onclick="openDrawer('drawer-yegna')">
                         <h3>YegnaBridge</h3>
                         <p>A youth-led charity organization I founded in 2025 to create a support family for those in need.</p>
                     </div>
-                    <div class="card magnetic" onclick="openDrawer('drawer-math')">
+                    <div class="card tilt-card" onclick="openDrawer('drawer-math')">
                         <h3>Mathematics Research</h3>
                         <p>Independent research in Number Theory and Linear Algebra, presented at national conferences.</p>
                     </div>
-                    <div class="card magnetic" onclick="openDrawer('drawer-transcript')">
+                    <div class="card tilt-card" onclick="openDrawer('drawer-transcript')">
                         <h3>Transcript Archive</h3>
                         <p>A written podcast designed to deeply document conversations with creative people and thinkers.</p>
                     </div>
-                    <div class="card magnetic" onclick="openDrawer('drawer-design')">
+                    <div class="card tilt-card" onclick="openDrawer('drawer-design')">
                         <h3>Graphic Design</h3>
                         <p>Self-taught minimalist visual design focusing on brand identity, logos, and organizational marketing.</p>
                     </div>
@@ -401,7 +391,6 @@
                         <input type="email" name="EMAIL" placeholder="Enter your email address" required>
                         <button type="submit" class="magnetic">Subscribe</button>
                     </form>
-
                 </div>
             </section>
 
@@ -489,13 +478,6 @@
 
         <p><strong>እግዚአብሔር ይርዳን።</strong><br>- Ephraim Teketel</p>
 
-        <div class="applause-container">
-            <button class="clap-btn magnetic" id="clap-btn-article1" onclick="toggleClap('article1', this)">
-                <i class="fa-solid fa-hands-clapping"></i>
-                <span class="clap-count">0</span>
-            </button>
-        </div>
-
         <div class="share-section">
             <h4>Share this piece</h4>
             <div class="share-row">
@@ -558,7 +540,14 @@
     </div>
 
     <script>
-        // 1. Theme Toggle
+        // 1. Reveal Curtain Animation
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('intro-curtain').classList.add('hidden');
+            }, 800); // 800ms delay to let the user see the pulsing logo
+        });
+
+        // 2. Theme Toggle
         const themeBtn = document.getElementById('theme-toggle');
         const html = document.documentElement;
         themeBtn.addEventListener('click', () => {
@@ -571,7 +560,7 @@
             }
         });
 
-        // 2. Typewriter Effect
+        // 3. Typewriter Effect
         const words = ["Curious learner.", "Hustler.", "Leader.", "Listener.", "Dreamer.", "Self-driven worker.", "Lifelong learner."];
         let wordIdx = 0; let charIdx = 0; let isDeleting = false;
         const typeText = document.getElementById('type-text');
@@ -595,7 +584,7 @@
         }
         document.addEventListener("DOMContentLoaded", typeWriter);
 
-        // 3. Drawer Logic & iOS Dim/Shrink Effect
+        // 4. Drawer Logic & iOS Dim/Shrink Effect
         const overlay = document.getElementById('drawer-overlay');
         const mainWrapper = document.getElementById('main-wrapper');
         
@@ -616,7 +605,7 @@
             document.getElementById('progress-bar').style.width = '0%';
         }
 
-        // 4. Music Player
+        // 5. Music Player
         const audio = document.getElementById('bg-music');
         const playBtn = document.getElementById('play-pause-btn');
         let isPlaying = false;
@@ -632,7 +621,7 @@
             isPlaying = !isPlaying;
         });
 
-        // 5. Dynamic Reading Progress Bar
+        // 6. Dynamic Reading Progress Bar
         function updateProgressBar(scrollElement) {
             const scrolled = (scrollElement.scrollTop / (scrollElement.scrollHeight - scrollElement.clientHeight)) * 100;
             document.getElementById('progress-bar').style.width = (scrolled || 0) + '%';
@@ -646,7 +635,28 @@
             drawer.addEventListener('scroll', (e) => updateProgressBar(e.target));
         });
 
-        // 6. Magnetic Elements Effect (For Desktop)
+        // 7. 3D Card Tilt Effect
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'none'; // remove delay while tracking
+            });
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -8;
+                const rotateY = ((x - centerX) / centerX) * 8;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease';
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // 8. Magnetic Elements Effect (For Buttons & Icons)
         document.querySelectorAll('.magnetic').forEach(elem => {
             elem.addEventListener('mousemove', function(e) {
                 const rect = this.getBoundingClientRect();
@@ -659,58 +669,7 @@
             });
         });
 
-        // 7. PERSISTENT REACTION LOGIC (STARTS AT 0, TOGGLEABLE, SAVES FOREVER)
-        function initReactions() {
-            const btn = document.getElementById('clap-btn-article1');
-            if(!btn) return;
-            
-            const articleId = 'article1';
-            const countSpan = btn.querySelector('.clap-count');
-            
-            // Get saved count or default to 0
-            let count = parseInt(localStorage.getItem(`reaction_count_${articleId}`) || '0', 10);
-            let hasReacted = localStorage.getItem(`user_reacted_${articleId}`) === 'true';
-            
-            countSpan.innerText = count;
-            if(hasReacted) {
-                btn.classList.add('reacted');
-            }
-        }
-
-        function toggleClap(articleId, btnElement) {
-            const countSpan = btnElement.querySelector('.clap-count');
-            let count = parseInt(localStorage.getItem(`reaction_count_${articleId}`) || '0', 10);
-            let hasReacted = localStorage.getItem(`user_reacted_${articleId}`) === 'true';
-
-            if (!hasReacted) {
-                // User reacts (+1)
-                count += 1;
-                localStorage.setItem(`reaction_count_${articleId}`, count);
-                localStorage.setItem(`user_reacted_${articleId}`, 'true');
-                btnElement.classList.add('reacted');
-                
-                // Trigger floating emoji animation
-                const clapEmoji = document.createElement('div');
-                clapEmoji.innerHTML = '👏'; 
-                clapEmoji.classList.add('floating-clap');
-                const randomX = (Math.random() - 0.5) * 60;
-                clapEmoji.style.left = `calc(50% + ${randomX}px)`;
-                clapEmoji.style.top = '10px';
-                btnElement.parentElement.appendChild(clapEmoji);
-                setTimeout(() => { clapEmoji.remove(); }, 1000);
-
-            } else {
-                // User takes it back (-1)
-                count = Math.max(0, count - 1);
-                localStorage.setItem(`reaction_count_${articleId}`, count);
-                localStorage.setItem(`user_reacted_${articleId}`, 'false');
-                btnElement.classList.remove('reacted');
-            }
-
-            countSpan.innerText = count;
-        }
-
-        // 8. Dynamic Share Buttons Logic
+        // 9. Dynamic Share Buttons Logic
         function shareTo(platform) {
             const url = encodeURIComponent(window.location.href);
             const text = encodeURIComponent("Check out this essay by Ephraim Teketel: Moral vs. Spiritual Religion");
@@ -724,10 +683,8 @@
             window.open(shareUrl, '_blank');
         }
 
-        // Initialize state when DOM is loaded
+        // 10. Cleanup citations from PDF parsing
         document.addEventListener("DOMContentLoaded", function() {
-            initReactions();
-            
             const blog2 = document.getElementById('drawer-blog-2');
             if (blog2) {
                 blog2.innerHTML = blog2.innerHTML.replace(/\*\]/g, '');
