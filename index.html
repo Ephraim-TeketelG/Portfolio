@@ -50,6 +50,31 @@
         a { color: var(--text-primary); text-decoration: none; transition: color 0.3s ease; }
         a:hover { color: var(--accent); }
 
+        /* FEATURE 4: CUSTOM SCROLLBAR & TEXT HIGHLIGHT */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+        ::selection { background: var(--accent); color: #ffffff; }
+        ::-moz-selection { background: var(--accent); color: #ffffff; }
+
+        /* FEATURE 1: APPLE iOS SHRINK EFFECT */
+        #main-wrapper {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.5s ease;
+            background-color: var(--bg-primary);
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            z-index: 1; 
+        }
+        .ios-shrink {
+            transform: scale(0.93) translateY(2vh);
+            border-radius: 24px;
+            overflow: hidden;
+            pointer-events: none;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
         /* Reading Progress Bar */
         #progress-bar {
             position: fixed; top: 0; left: 0; width: 0%; height: 3px;
@@ -111,7 +136,7 @@
         /* Grid Layouts */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
 
-        /* Premium Interactive Cards (Projects & Blog) */
+        /* Premium Interactive Cards */
         .card {
             background: var(--bg-secondary); border: 1px solid var(--border-color);
             padding: 40px; border-radius: 16px; cursor: pointer;
@@ -166,8 +191,8 @@
         /* Sliding Drawer */
         .drawer-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-            z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+            z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
         }
         .drawer-overlay.active { opacity: 1; pointer-events: auto; }
         
@@ -190,8 +215,32 @@
         .reader-mode p { font-family: var(--font-story); font-size: 1.2rem; line-height: 1.9; color: var(--text-primary); margin-bottom: 25px; }
         .reader-mode ul { margin: 0 0 25px 20px; font-family: var(--font-story); font-size: 1.2rem; line-height: 1.9; }
 
+        /* FEATURE 2: MEDIUM APPLAUSE BUTTON */
+        .applause-container { display: flex; justify-content: center; margin: 50px 0 20px; position: relative; }
+        .clap-btn {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            padding: 12px 25px; border-radius: 50px; font-size: 1.1rem; color: var(--text-primary);
+            display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.3s ease;
+            font-family: var(--font-ui); font-weight: 600; outline: none; user-select: none;
+        }
+        .clap-btn:hover { border-color: var(--text-primary); transform: translateY(-3px); }
+        .clap-btn:active { transform: translateY(0) scale(0.95); }
+        .clap-btn i { font-size: 1.3rem; color: var(--accent); }
+        .clap-count { color: var(--text-secondary); font-size: 1rem; }
+
+        /* Floating Clap Animation */
+        .floating-clap {
+            position: absolute; font-size: 1.8rem; pointer-events: none;
+            animation: floatUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            z-index: 100;
+        }
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(-80px) scale(1.5) rotate(15deg); }
+        }
+
         /* Share Section */
-        .share-section { margin-top: 60px; border-top: 1px solid var(--border-color); padding-top: 30px; text-align: center; }
+        .share-section { margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 30px; text-align: center; }
         .share-section h4 { margin-bottom: 20px; font-size: 1rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
         .share-row { display: flex; justify-content: center; gap: 15px; }
         .share-btn { 
@@ -237,166 +286,166 @@
 
     <div id="progress-bar"></div>
 
-    <nav>
-        <div class="nav-inner">
-            <div class="logo">Ephraim Teketel</div>
-            <button class="theme-btn magnetic" id="theme-toggle">Dark Mode</button>
+    <div id="main-wrapper">
+        <nav>
+            <div class="nav-inner">
+                <div class="logo">Ephraim Teketel</div>
+                <button class="theme-btn magnetic" id="theme-toggle">Dark Mode</button>
+            </div>
+        </nav>
+
+        <div class="container">
+            <header class="hero">
+                <h1>Building with purpose.</h1>
+                <div class="typewriter">I am a <span id="type-text"></span></div>
+                <p>
+                    A student from Ethiopia who enjoys learning, building meaningful projects, and leading initiatives that create real impact. I believe curiosity is the foundation of genuine growth.
+                </p>
+                <p>
+                    Beginning on <span class="highlight">August 28, 2026</span>, I will start my studies at UWC Robert Bosch College (Class of 2028) on a fully funded Davis Dare to Dream Scholarship. This opportunity is a profound blessing and a major milestone in my educational journey.
+                </p>
+            </header>
+
+            <section id="story">
+                <div class="section-header">01. The Full Story</div>
+                <div class="story-content">
+                    <p>I grew up in Shinshicho, a town in Central Ethiopia. It was there, attending St. Comboni School for Grades 7 and 8, that my foundational drive began to take shape. During my eighth-grade year, I took the initiative to tutor my classmates every morning before school to help them prepare for the regional examination. The hard work paid off. At the end of Grade 8, I achieved one of the highest scores in my zone, earning a 94.6 average and placing in the 99.99 percentile.</p>
+                    
+                    <p>My deep passion for mathematics truly sparked around Grade 7. I found myself completely captivated by mathematical puzzles, novel discoveries, and exploring complex ideas with my teachers. That curiosity pushed me fast. By Grade 8, I had already started writing my first independent mathematics research paper.</p>
+                    
+                    <p>During Grade 9, I took a major step forward by finding a mentor from Kotebe University. My mentor guided me through the writing process and helped me refine my research. This preparation led to a defining moment in Grade 10 when I presented my first research paper at the International Conference on Mathematics and Mathematics Education (ICMME 2025). The conference was hosted by the Ethiopian Mathematics Professionals Association (EMPA) at Dilla University. Following my presentation, I was officially certified and nominated as an EMPA Ambassador.</p>
+
+                    <blockquote>
+                        "Leadership begins with listening. Before judging, deciding, or trying to influence others, we must first deeply understand them."
+                    </blockquote>
+
+                    <p>I remained highly active in EMPA events. In 2026, I presented once again during the International Day of Mathematics (Pi Day) and completed my second independent mathematics research paper. Today, I am still rigorously refining both papers before pursuing official publication.</p>
+                    
+                    <p>Beyond academics, leadership remains one of the strongest pillars of my life. I believe success means becoming a better version of myself than I was yesterday and solving real problems through realistic initiatives. Ultimately, I am striving for a world where everyone is treated first as a human being, with dignity, compassion, and respect.</p>
+                </div>
+            </section>
+
+            <section id="blog">
+                <div class="section-header">02. Writings & Thoughts</div>
+                <div class="grid">
+                    
+                    <div class="card magnetic" onclick="openDrawer('drawer-blog-2')">
+                        <span class="blog-date">August 2026</span>
+                        <h3>Moral vs. Spiritual Religion</h3>
+                        <p>Have you ever realized the way you have been raised, especially in the spiritual sense?</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="work">
+                <div class="section-header">03. Selected Work</div>
+                <div class="grid">
+                    <div class="card magnetic" onclick="openDrawer('drawer-yegna')">
+                        <h3>YegnaBridge</h3>
+                        <p>A youth-led charity organization I founded in 2025 to create a support family for those in need.</p>
+                    </div>
+                    <div class="card magnetic" onclick="openDrawer('drawer-math')">
+                        <h3>Mathematics Research</h3>
+                        <p>Independent research in Number Theory and Linear Algebra, presented at national conferences.</p>
+                    </div>
+                    <div class="card magnetic" onclick="openDrawer('drawer-transcript')">
+                        <h3>Transcript Archive</h3>
+                        <p>A written podcast designed to deeply document conversations with creative people and thinkers.</p>
+                    </div>
+                    <div class="card magnetic" onclick="openDrawer('drawer-design')">
+                        <h3>Graphic Design</h3>
+                        <p>Self-taught minimalist visual design focusing on brand identity, logos, and organizational marketing.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="details">
+                <div class="section-header">04. Details & Random Facts</div>
+                <div class="grid">
+                    <div class="info-block">
+                        <h3>Programs & Opportunities</h3>
+                        <ul class="info-list">
+                            <li><strong>UWC Robert Bosch College</strong> Class of 2028 Fully funded Davis Dare to Dream Scholar.</li>
+                            <li><strong>AddisCoder (2025)</strong> Python Programming and Algorithms.</li>
+                            <li><strong>Yale Entrepreneurial Society (2025)</strong> Official Participant.</li>
+                            <li><strong>YYGS (2026)</strong> Accepted into the program but unable to attend due to travel expenses.</li>
+                            <li><strong>AI Summer Camp (2026)</strong> Accepted but unable to attend due to UWC preparation schedule conflicts.</li>
+                        </ul>
+                    </div>
+                    <div class="info-block">
+                        <h3>Human Elements</h3>
+                        <ul class="info-list">
+                            <li><strong>Chess Mentality</strong> If my opponent blunders their queen, I am about 90% confident I will win. If I blunder my own queen, I still do not resign. (Note: I am a very beginner :)).</li>
+                            <li><strong>Languages Spoken</strong> English (Upper Intermediate), Amharic (Native), and Kambatissa (Native).</li>
+                            <li><strong>Personal Drive</strong> I once slept only 9 hours in an entire week. I genuinely enjoy taking initiative instead of waiting for someone else.</li>
+                            <li><strong>Current Obsessions</strong> Leadership, Science, Chess, gym training, and listening to "Bicha Liben Degifew" by Hanna Tekle.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="newsletter">
+                <div class="newsletter-box">
+                    <h2>Join my digital circle.</h2>
+                    <p>Get an email whenever I publish a new edition of the Transcript Archive or write a new blog post. No spam, just ideas.</p>
+                    
+                    <form class="subscribe-form" action="https://github.us9.list-manage.com/subscribe/post?u=c8799884f17165c6d6dd31fda&amp;id=9369a95887&amp;f_id=00a555e1f0" method="POST" target="_blank">
+                        <input type="email" name="EMAIL" placeholder="Enter your email address" required>
+                        <button type="submit" class="magnetic">Subscribe</button>
+                    </form>
+
+                </div>
+            </section>
+
+            <footer>
+                <div class="section-header">05. Let's Connect</div>
+                <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 600px;">
+                    I am always looking for ways to improve myself and love hearing people's stories. Reach out on any platform below.
+                </p>
+                <div class="social-grid">
+                    <a href="mailto:ephraimteketelg@gmail.com" class="social-link magnetic">
+                        <i class="fa-regular fa-envelope social-icon"></i>
+                        <span class="label">Email</span>
+                        <span class="handle">ephraimteketelg@gmail.com</span>
+                    </a>
+                    <a href="https://t.me/ephraimteketel" target="_blank" class="social-link magnetic">
+                        <i class="fa-brands fa-telegram social-icon"></i>
+                        <span class="label">Telegram</span>
+                        <span class="handle">t.me/ephraimteketel</span>
+                    </a>
+                    <a href="https://wa.me/251901844806" target="_blank" class="social-link magnetic">
+                        <i class="fa-brands fa-whatsapp social-icon"></i>
+                        <span class="label">WhatsApp</span>
+                        <span class="handle">+251 901 844 806</span>
+                    </a>
+                    <a href="https://instagram.com/ephraim_ite" target="_blank" class="social-link magnetic">
+                        <i class="fa-brands fa-instagram social-icon"></i>
+                        <span class="label">Instagram</span>
+                        <span class="handle">@ephraim_ite</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ephraim-teketel-2397a1379" target="_blank" class="social-link magnetic">
+                        <i class="fa-brands fa-linkedin social-icon"></i>
+                        <span class="label">LinkedIn</span>
+                        <span class="handle">Ephraim Teketel linkedin</span>
+                    </a>
+                </div>
+            </footer>
         </div>
-    </nav>
 
-    <div class="container">
-        <header class="hero">
-            <h1>Building with purpose.</h1>
-            <div class="typewriter">I am a <span id="type-text"></span></div>
-            <p>
-                A student from Ethiopia who enjoys learning, building meaningful projects, and leading initiatives that create real impact. I believe curiosity is the foundation of genuine growth.
-            </p>
-            <p>
-                Beginning on <span class="highlight">August 28, 2026</span>, I will start my studies at UWC Robert Bosch College (Class of 2028) on a fully funded Davis Dare to Dream Scholarship. This opportunity is a profound blessing and a major milestone in my educational journey.
-            </p>
-        </header>
-
-        <section id="story">
-            <div class="section-header">01. The Full Story</div>
-            <div class="story-content">
-                <p>I grew up in Shinshicho, a town in Central Ethiopia. It was there, attending St. Comboni School for Grades 7 and 8, that my foundational drive began to take shape. During my eighth-grade year, I took the initiative to tutor my classmates every morning before school to help them prepare for the regional examination. The hard work paid off. At the end of Grade 8, I achieved one of the highest scores in my zone, earning a 94.6 average and placing in the 99.99 percentile.</p>
-                
-                <p>My deep passion for mathematics truly sparked around Grade 7. I found myself completely captivated by mathematical puzzles, novel discoveries, and exploring complex ideas with my teachers. That curiosity pushed me fast. By Grade 8, I had already started writing my first independent mathematics research paper.</p>
-                
-                <p>During Grade 9, I took a major step forward by finding a mentor from Kotebe University. My mentor guided me through the writing process and helped me refine my research. This preparation led to a defining moment in Grade 10 when I presented my first research paper at the International Conference on Mathematics and Mathematics Education (ICMME 2025). The conference was hosted by the Ethiopian Mathematics Professionals Association (EMPA) at Dilla University. Following my presentation, I was officially certified and nominated as an EMPA Ambassador.</p>
-
-                <blockquote>
-                    "Leadership begins with listening. Before judging, deciding, or trying to influence others, we must first deeply understand them."
-                </blockquote>
-
-                <p>I remained highly active in EMPA events. In 2026, I presented once again during the International Day of Mathematics (Pi Day) and completed my second independent mathematics research paper. Today, I am still rigorously refining both papers before pursuing official publication.</p>
-                
-                <p>Beyond academics, leadership remains one of the strongest pillars of my life. I believe success means becoming a better version of myself than I was yesterday and solving real problems through realistic initiatives. Ultimately, I am striving for a world where everyone is treated first as a human being, with dignity, compassion, and respect.</p>
+        <div class="music-player magnetic">
+            <audio id="bg-music" loop>
+                <source src="song.mp3" type="audio/mpeg">
+            </audio>
+            <button class="play-btn" id="play-pause-btn">
+                <i class="fa-solid fa-play"></i>
+            </button>
+            <div class="track-info">
+                <span class="track-name">Bicha Liben Degifew</span>
+                <span class="artist-name">Hanna Tekle</span>
             </div>
-        </section>
-
-        <section id="blog">
-            <div class="section-header">02. Writings & Thoughts</div>
-            <div class="grid">
-                
-                <div class="card magnetic" onclick="openDrawer('drawer-blog-2')">
-                    <span class="blog-date">August 2026</span>
-                    <h3>Moral vs. Spiritual Religion</h3>
-                    <p>Have you ever realized the way you have been raised, especially in the spiritual sense?</p>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="work">
-            <div class="section-header">03. Selected Work</div>
-            <div class="grid">
-                <div class="card magnetic" onclick="openDrawer('drawer-yegna')">
-                    <h3>YegnaBridge</h3>
-                    <p>A youth-led charity organization I founded in 2025 to create a support family for those in need.</p>
-                </div>
-                <div class="card magnetic" onclick="openDrawer('drawer-math')">
-                    <h3>Mathematics Research</h3>
-                    <p>Independent research in Number Theory and Linear Algebra, presented at national conferences.</p>
-                </div>
-                <div class="card magnetic" onclick="openDrawer('drawer-transcript')">
-                    <h3>Transcript Archive</h3>
-                    <p>A written podcast designed to deeply document conversations with creative people and thinkers.</p>
-                </div>
-                <div class="card magnetic" onclick="openDrawer('drawer-design')">
-                    <h3>Graphic Design</h3>
-                    <p>Self-taught minimalist visual design focusing on brand identity, logos, and organizational marketing.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="details">
-            <div class="section-header">04. Details & Random Facts</div>
-            <div class="grid">
-                <div class="info-block">
-                    <h3>Programs & Opportunities</h3>
-                    <ul class="info-list">
-                        <li><strong>UWC Robert Bosch College</strong> Class of 2028 Fully funded Davis Dare to Dream Scholar.</li>
-                        <li><strong>AddisCoder (2025)</strong> Python Programming and Algorithms.</li>
-                        <li><strong>Yale Entrepreneurial Society (2025)</strong> Official Participant.</li>
-                        <li><strong>YYGS (2026)</strong> Accepted into the program but unable to attend due to travel expenses.</li>
-                        <li><strong>AI Summer Camp (2026)</strong> Accepted but unable to attend due to UWC preparation schedule conflicts.</li>
-                    </ul>
-                </div>
-                <div class="info-block">
-                    <h3>Human Elements</h3>
-                    <ul class="info-list">
-                        <li><strong>Chess Mentality</strong> If my opponent blunders their queen, I am about 90% confident I will win. If I blunder my own queen, I still do not resign. (Note: I am a very beginner :)).</li>
-                        <li><strong>Languages Spoken</strong> English (Upper Intermediate), Amharic (Native), and Kambatissa (Native).</li>
-                        <li><strong>Personal Drive</strong> I once slept only 9 hours in an entire week. I genuinely enjoy taking initiative instead of waiting for someone else.</li>
-                        <li><strong>Current Obsessions</strong> Leadership, Science, Chess, gym training, and listening to "Bicha Liben Degifew" by Hanna Tekle.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="newsletter">
-            <div class="newsletter-box">
-                <h2>Join my digital circle.</h2>
-                <p>Get an email whenever I publish a new edition of the Transcript Archive or write a new blog post. No spam, just ideas.</p>
-                
-                <form class="subscribe-form" action="https://github.us9.list-manage.com/subscribe/post?u=c8799884f17165c6d6dd31fda&amp;id=9369a95887&amp;f_id=00a555e1f0" method="POST" target="_blank">
-                    <input type="email" name="EMAIL" placeholder="Enter your email address" required>
-                    <button type="submit" class="magnetic">Subscribe</button>
-                </form>
-
-            </div>
-        </section>
-
-        <footer>
-            <div class="section-header">05. Let's Connect</div>
-            <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 600px;">
-                I am always looking for ways to improve myself and love hearing people's stories. Reach out on any platform below.
-            </p>
-            <div class="social-grid">
-                <a href="mailto:ephraimteketelg@gmail.com" class="social-link magnetic">
-                    <i class="fa-regular fa-envelope social-icon"></i>
-                    <span class="label">Email</span>
-                    <span class="handle">ephraimteketelg@gmail.com</span>
-                </a>
-                <a href="https://t.me/ephraimteketel" target="_blank" class="social-link magnetic">
-                    <i class="fa-brands fa-telegram social-icon"></i>
-                    <span class="label">Telegram</span>
-                    <span class="handle">t.me/ephraimteketel</span>
-                </a>
-                <a href="https://wa.me/251901844806" target="_blank" class="social-link magnetic">
-                    <i class="fa-brands fa-whatsapp social-icon"></i>
-                    <span class="label">WhatsApp</span>
-                    <span class="handle">+251 901 844 806</span>
-                </a>
-                <a href="https://instagram.com/ephraim_ite" target="_blank" class="social-link magnetic">
-                    <i class="fa-brands fa-instagram social-icon"></i>
-                    <span class="label">Instagram</span>
-                    <span class="handle">@ephraim_ite</span>
-                </a>
-                <a href="https://www.linkedin.com/in/ephraim-teketel-2397a1379" target="_blank" class="social-link magnetic">
-                    <i class="fa-brands fa-linkedin social-icon"></i>
-                    <span class="label">LinkedIn</span>
-                    <span class="handle">Ephraim Teketel linkedin</span>
-                </a>
-            </div>
-        </footer>
-    </div>
-
-    <div class="music-player magnetic">
-        <audio id="bg-music" loop>
-            <source src="song.mp3" type="audio/mpeg">
-        </audio>
-        <button class="play-btn" id="play-pause-btn">
-            <i class="fa-solid fa-play"></i>
-        </button>
-        <div class="track-info">
-            <span class="track-name">Bicha Liben Degifew</span>
-            <span class="artist-name">Hanna Tekle</span>
         </div>
-    </div>
-
-    <div class="drawer-overlay" id="drawer-overlay" onclick="closeAllDrawers()"></div>
+    </div> <div class="drawer-overlay" id="drawer-overlay" onclick="closeAllDrawers()"></div>
     
     <div class="drawer reader-mode" id="drawer-blog-2">
         <button class="close-drawer magnetic" onclick="closeAllDrawers()">×</button>
@@ -432,6 +481,13 @@
         <p>This made me reflect again on what many people, including myself, might have experienced growing up. We may have learned how to act religiously, but not always how to actually know God in a personal and transformative way. And maybe that is the real question I am left with.</p>
 
         <p><strong>እግዚአብሔር ይርዳን።</strong><br>- Ephraim Teketel</p>
+
+        <div class="applause-container">
+            <button class="clap-btn magnetic" onclick="triggerClap(event, this)">
+                <i class="fa-solid fa-hands-clapping"></i>
+                <span class="clap-count">47</span>
+            </button>
+        </div>
 
         <div class="share-section">
             <h4>Share this piece</h4>
@@ -532,16 +588,23 @@
         }
         document.addEventListener("DOMContentLoaded", typeWriter);
 
-        // 3. Drawer Logic
+        // 3. Drawer Logic & iOS Dim/Shrink Effect
         const overlay = document.getElementById('drawer-overlay');
+        const mainWrapper = document.getElementById('main-wrapper');
+        
         function openDrawer(id) {
             overlay.classList.add('active');
             document.getElementById(id).classList.add('active');
+            mainWrapper.classList.add('ios-shrink'); // Triggers the Shrink
+            document.body.style.backgroundColor = '#000'; // Dark background for contrast
             document.body.style.overflow = 'hidden'; 
         }
+        
         function closeAllDrawers() {
             overlay.classList.remove('active');
             document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
+            mainWrapper.classList.remove('ios-shrink'); // Un-shrinks the site
+            document.body.style.backgroundColor = 'var(--bg-primary)'; // Reset
             document.body.style.overflow = 'auto';
             document.getElementById('progress-bar').style.width = '0%'; // Reset bar on close
         }
@@ -591,7 +654,30 @@
             });
         });
 
-        // 7. Dynamic Share Buttons Logic
+        // 7. Applause Animation Logic
+        let currentClaps = 47;
+        function triggerClap(event, btnElement) {
+            currentClaps++;
+            const counter = btnElement.querySelector('.clap-count');
+            counter.innerText = currentClaps;
+            
+            // Create floating clapping emoji
+            const clapEmoji = document.createElement('div');
+            clapEmoji.innerHTML = '👏'; 
+            clapEmoji.classList.add('floating-clap');
+            
+            // Randomize left/right scatter
+            const randomX = (Math.random() - 0.5) * 60;
+            clapEmoji.style.left = `calc(50% + ${randomX}px)`;
+            clapEmoji.style.top = '10px';
+            
+            btnElement.parentElement.appendChild(clapEmoji);
+            
+            // Clean up the DOM after animation
+            setTimeout(() => { clapEmoji.remove(); }, 1000);
+        }
+
+        // 8. Dynamic Share Buttons Logic
         function shareTo(platform) {
             const url = encodeURIComponent(window.location.href);
             const text = encodeURIComponent("Check out this essay by Ephraim Teketel: Moral vs. Spiritual Religion");
@@ -605,7 +691,7 @@
             window.open(shareUrl, '_blank');
         }
 
-        // 8. Cleanup citations from PDF parsing
+        // 9. Cleanup citations from PDF parsing
         document.addEventListener("DOMContentLoaded", function() {
             const blog2 = document.getElementById('drawer-blog-2');
             if (blog2) {
