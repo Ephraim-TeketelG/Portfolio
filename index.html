@@ -70,8 +70,16 @@
         }
         .theme-btn:hover { background: var(--text-primary); color: var(--bg-primary); }
 
-        /* Hero Section */
-        .hero { padding: 200px 0 120px; min-height: 85vh; display: flex; flex-direction: column; justify-content: center; }
+        /* Hero Section - FIX: Added immediate load animation */
+        .hero { 
+            padding: 200px 0 120px; min-height: 85vh; display: flex; flex-direction: column; justify-content: center; 
+            animation: instantLoad 1s ease-out forwards;
+        }
+        @keyframes instantLoad {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
         .hero h1 { font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 600; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px; }
         
         .typewriter { font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 40px; height: 35px; font-weight: 400; }
@@ -179,7 +187,7 @@
         .track-name { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
         .artist-name { font-size: 0.75rem; color: var(--text-secondary); }
 
-        /* Scroll Animation */
+        /* Scroll Animation for lower sections */
         .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
@@ -194,7 +202,7 @@
     </nav>
 
     <div class="container">
-        <header class="hero reveal">
+        <header class="hero">
             <h1>Building with purpose.</h1>
             <div class="typewriter">I am a <span id="type-text"></span></div>
             <p>
@@ -414,4 +422,67 @@
         function typeWriter() {
             const current = words[wordIdx];
             if (isDeleting) {
-                type
+                typeText.textContent = current.substring(0, charIdx - 1);
+                charIdx--;
+            } else {
+                typeText.textContent = current.substring(0, charIdx + 1);
+                charIdx++;
+            }
+            let speed = isDeleting ? 40 : 80;
+            if (!isDeleting && charIdx === current.length) {
+                speed = 2000; isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false; wordIdx = (wordIdx + 1) % words.length; speed = 400;
+            }
+            setTimeout(typeWriter, speed);
+        }
+        document.addEventListener("DOMContentLoaded", typeWriter);
+
+        // Scroll Reveal Animations - FIX: Added a failsafe timeout for mobile browsers
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05 });
+        
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        
+        // Failsafe: Forces elements to load if the scroll observer gets stuck
+        setTimeout(() => {
+            document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+        }, 1500);
+
+        // Drawer Logic
+        const overlay = document.getElementById('drawer-overlay');
+        function openDrawer(id) {
+            overlay.classList.add('active');
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+        function closeAllDrawers() {
+            overlay.classList.remove('active');
+            document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
+            document.body.style.overflow = 'auto';
+        }
+
+        // Music Player Logic
+        const audio = document.getElementById('bg-music');
+        const playBtn = document.getElementById('play-pause-btn');
+        let isPlaying = false;
+
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            } else {
+                audio.play();
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+</body>
+</html>
